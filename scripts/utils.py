@@ -1,12 +1,19 @@
-import os
+from flask import Flask, request, jsonify
+import joblib
+import pandas as pd
 
-def ensure_directories_exist(directories):
-    """Ensure that required directories exist."""
-    for directory in directories:
-        os.makedirs(directory, exist_ok=True)
+app = Flask(__name__)
+
+# Load the trained model
+model = joblib.load("models/credit_risk_model.pkl")
+
+@app.route("/predict", methods=["POST"])
+def predict():
+    """Predict credit risk based on input JSON."""
+    data = request.get_json()
+    df = pd.DataFrame(data)
+    predictions = model.predict(df)
+    return jsonify({"predictions": predictions.tolist()})
 
 if __name__ == "__main__":
-    # Ensure necessary directories are created
-    dirs = ["data/raw", "data/processed", "models", "scripts"]
-    ensure_directories_exist(dirs)
-    print("Required directories created.")
+    app.run(debug=True)
