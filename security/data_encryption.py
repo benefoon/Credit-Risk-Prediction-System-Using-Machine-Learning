@@ -13,3 +13,7 @@ data['sensitive_column'] = data['sensitive_column'].apply(lambda x: cipher.encry
 
 # Save encrypted data
 data.to_csv("data/encrypted_data.csv", index=False)
+
+# Save encryption key
+with open("security/encryption_key.key", "wb") as key_file:
+    key_file.write(key)
