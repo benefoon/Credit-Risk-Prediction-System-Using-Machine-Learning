@@ -187,13 +187,3 @@ We welcome contributions to improve this project! To contribute:
 ![Deep Learning](https://img.shields.io/badge/Deep_Learning-TensorFlow-orange.svg)
 ![FastAPI](https://img.shields.io/badge/API-FastAPI-green.svg)
 ```
-
----
-
-### **Changes and Updates:**
-1. Updated the **repository structure** based on the provided images.
-2. Reflected all new scripts (`eda_analysis.py`, `hyperparameter_tuning.py`, etc.).
-3. Improved documentation for security, MLflow integration, and advanced scripts.
-4. Added clear instructions for usage and API integration.
-
-Let me know if there’s anything else to refine!
