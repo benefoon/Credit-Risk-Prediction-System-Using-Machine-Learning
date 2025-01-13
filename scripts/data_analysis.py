@@ -1,51 +1,38 @@
 import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
 
-def load_data(file_path):
-    """
-    Load the dataset from the given file path.
-    Raises:
-        FileNotFoundError: If the file does not exist.
-        pd.errors.EmptyDataError: If the file is empty.
-    """
-    try:
-        data = pd.read_csv(file_path)
-        print(f"Data successfully loaded from: {file_path}")
-        return data
-    except FileNotFoundError:
-        print(f"Error: File not found at path {file_path}. Please check the file path.")
-        raise
-    except pd.errors.EmptyDataError:
-        print(f"Error: The file at {file_path} is empty.")
-        raise
-    except Exception as e:
-        print(f"An unexpected error occurred: {e}")
-        raise
+# Load dataset
+data = pd.read_csv("data/credit_risk_data.csv")
 
-def display_data_overview(df):
-    """
-    Display basic insights and structure of the dataset.
-    Includes dataset info, first rows, missing values, and a statistical summary.
-    """
-    if df.empty:
-        print("Warning: The dataset is empty. No data to display.")
-        return
+# Summary statistics
+print("Summary Statistics:")
+print(data.describe())
 
-    print("\n--- Dataset Info ---")
-    print(df.info())
-    print("\n--- First 5 Rows ---")
-    print(df.head())
-    print("\n--- Missing Values ---")
-    print(df.isnull().sum())
-    print("\n--- Statistical Overview ---")
-    print(df.describe())
+# Check missing values
+missing_values = data.isnull().sum()
+print("\nMissing Values:")
+print(missing_values)
 
-if __name__ == "__main__":
-    # Define the path to the dataset
-    data_path = "data/raw/credit_risk_data.csv"
-    
-    try:
-        # Load and display data
-        df = load_data(data_path)
-        display_data_overview(df)
-    except Exception as e:
-        print(f"Failed to process the dataset: {e}")
+# Visualize missing values
+plt.figure(figsize=(10, 6))
+sns.heatmap(data.isnull(), cbar=False, cmap="viridis")
+plt.title("Missing Values Heatmap")
+plt.savefig("outputs/missing_values_heatmap.png")
+
+# Correlation heatmap
+plt.figure(figsize=(12, 8))
+correlation_matrix = data.corr()
+sns.heatmap(correlation_matrix, annot=True, cmap="coolwarm", fmt=".2f")
+plt.title("Correlation Matrix")
+plt.savefig("outputs/correlation_matrix.png")
+
+# Distribution of target variable
+plt.figure(figsize=(8, 6))
+sns.countplot(x="target_column", data=data, palette="pastel")
+plt.title("Target Variable Distribution")
+plt.savefig("outputs/target_distribution.png")
+
+# Save analysis results
+data.describe().to_csv("outputs/data_summary.csv")
+missing_values.to_csv("outputs/missing_values.csv")
